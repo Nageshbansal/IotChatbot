@@ -11,13 +11,16 @@
     insert into users (username, password, first_name, last_name, email, phone_number, last_login, api_key) 
     values ('nageshbansal',"1234", 'nagesh', 'bansal', 'nagesh@gmail.com', '22304439', now(), 'abhikuchnhihai');
 
-    create table Devices (deviceID varchar(255), username varchar(255), field_name varchar(255), temperature int, humidity int, moisture int, light int, 
+    create table Devices (deviceID varchar(255), username varchar(255), field_name varchar(255), temperature int, humidity int, moisture int, light TEXT, 
     foreign key (username) references users(username), primary key (deviceID));
     select * from Node;
     select field_name, temperature, humidity, moisture, light from Devices where username="nageshbansal";
 
     insert into Devices (deviceID, username, field_name, temperature, humidity, moisture, light)
-    values('ROOM', 'nageshbansal', 'ROOM', 45, 54, 100, 600);
+    values('ROOM', 'nageshbansal', 'ROOM', 45, 54, 100, "ON");
+
+    UPDATE Devices (deviceID, username, field_name, temperature, humidity, moisture, light)
+    values('ROOM', 'nageshbansal', 'ROOM', 45, 54, 100, "ON");
   
     select * from Node;
 

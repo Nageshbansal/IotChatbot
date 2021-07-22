@@ -196,10 +196,10 @@ def get_temperature(user):
         query = "select temperature from Devices where username = '{}'".format(user)
         cur.execute(query)
         randData = choice(randlist)
-        temprature = cur.fetchall()
-        temp = temprature[0][0] + 0.1*randData
+        temperature = cur.fetchall()
+        temp = temperature[0][0] + 0.01*randData
         
-        print(temprature)
+        print(temperature)
         return temp
 
 def get_moisture(user):
@@ -211,7 +211,7 @@ def get_moisture(user):
        cur.execute(query)
        randData = choice(randlist)
        moisture = cur.fetchall()
-       moist = moisture[0][0] + 0.1*randData
+       moist = moisture[0][0] + 0.01*randData
       
        return moist
 
@@ -224,7 +224,7 @@ def get_humidity(user):
        cur.execute(query)
        randData = choice(randlist)
        humidity = cur.fetchall()
-       hum = humidity[0][0] + 0.1*randData
+       hum = humidity[0][0] + 0.01*randData
 
        return hum
 
@@ -244,13 +244,13 @@ def get_light(user):
 
 @app.route('/api/<string:user>/data/', methods=['GET', 'POST'])
 def data(user):
-        temprature = get_temperature(user)
+        temperature = get_temperature(user)
         moisture = get_moisture(user)
         light = get_light(user)
         humidity = get_humidity(user)
         time = datetime.now()
         time = time.strftime("%H:%M:%S")
-        response = {"temprature":temprature, "light" :light,"humidity":humidity,"moisture":moisture,"time":time}
+        response = {"temperature":temperature, "light" :light,"humidity":humidity,"moisture":moisture,"time":time}
         return response
 
 

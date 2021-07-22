@@ -80,8 +80,9 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
       <div class="w3-container w3-white w3-hover-shadow w3-border-red w3-bottombar w3-padding-16">
         <div class="w3-left"><img src="/static/images/temperature.svg"></div>
         <div class="w3-right">
-          <h3  id = "card-temp">52</h3>
+          <h3  id = "card-temp"><div id="temp"></div></h3>
         </div>
+        
         <div class="w3-clear"></div>
         <h4>Temperature</h4>
       </div>
@@ -90,7 +91,7 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
       <div class="w3-container w3-white w3-hover-shadow w3-border-blue w3-bottombar w3-padding-16">
         <div class="w3-left"><img src="/static/images/grass.svg"></div>
         <div class="w3-right">
-          <h3 id = "card-moisture">99</h3>
+          <h3 id = "card-moisture"><div id="moist"></div></h3>
         </div>
         <div class="w3-clear"></div>
         <h4>Moisture</h4>
@@ -100,7 +101,7 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
       <div class="w3-container w3-white w3-hover-shadow w3-border-teal w3-bottombar w3-padding-16">
         <div class="w3-left"><img src="/static/images/humidity.svg"></div>
         <div class="w3-right">
-          <h3 id ="card-humidity">23</h3>
+          <h3 id ="card-humidity"><div id="hum"></div></h3>
         </div>
         <div class="w3-clear"></div>
         <h4>Humidity</h4>
@@ -110,10 +111,10 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
       <div class="w3-container w3-white w3-hover-shadow w3-border-orange w3-bottombar w3-padding-16">
         <div class="w3-left"><img src="/static/images/ecology.svg"></div>
         <div class="w3-right">
-          <h3 id = "card-light">50</h3>
+          <h3 id = "card-light"><div id="lig"></div></h3>
         </div>
         <div class="w3-clear"></div>
-        <h4>Light Intensity</h4>
+        <h4>Lights</h4>
       </div>
     </div>
   </div>
@@ -127,7 +128,7 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
     </div>
 
     
-    <div class="w3-container w3-white w3-card w3-hover-shadow w3-section w3-round-large">
+    <!-- <div class="w3-container w3-white w3-card w3-hover-shadow w3-section w3-round-large">
       <h3>
         Humidity
       </h3> 
@@ -146,50 +147,12 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
         Light Intensity
       </h3> 
       <canvas id="light" ></canvas>
-    </div>
+    </div> -->
 
 </div>
   
 
-  <div class="w3-panel w3-padding-16">
-    <div class="w3-row-padding w3-white w3-border-green w3-margin-left w3-leftbar" style="margin:0 -16px">
-      <div class="w3-third w3-padding-16">
-        <h5>Field Description</h5>
-        <img src="/static/images/trees.svg" style="width:100%" alt="">
-      </div>
-      <div class="w3-twothird">
-        <h5>SunFlower Garden</h5>
-        
-        <p>
-          Something is going to be in here
-        </p>
-
-      </div>
-    </div>
-  </div>
-  <br>
-  <div class="w3-container w3-dark-grey w3-padding-32">
-    <div class="w3-row">
-      <div class="w3-container w3-third">
-        <h5 class="w3-bottombar w3-border-green">Contributers</h5>
-        <h6>Aman Singh</h6>
-        <h6>Rica Ghosh</h6>
-        <h6>Deepak Yadu</h6>
-        <h6>Khyati banjare</h6>
-        <h6>Arwind</h6>
-      </div>
-      <div class="w3-container w3-third">
-        <h5 class="w3-bottombar w3-border-red">Guides</h5>
-        <h6>All faculties Of BIT Raipur</h6>
-      </div>
-      <div class="w3-container w3-third">
-        <h5 class="w3-bottombar w3-border-orange">References</h5>
-        <h6>Google.com</h6>
-      </div>
-    </div>
-  </div>
-
-</div>
+ 
 
 <script>
 // Get the Sidebar
