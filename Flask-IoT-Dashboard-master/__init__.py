@@ -5,14 +5,23 @@ from datetime import datetime
 import person
 import os, binascii
 import sqlite3
+import eventlet
+from flask_mqtt import Mqtt
+from flask_socketio import SocketIO
 app = Flask(__name__)
-
+eventlet.monkey_patch()
 logged_in = {}
 api_loggers = {}
 mydb = database.db()
 
 #test api key aGFja2luZ2lzYWNyaW1lYXNmc2FmZnNhZnNhZmZzYQ==
+app.config['MQTT_BROKER_URL'] = '127.0.0.1'
+app.config['MQTT_BROKER_PORT'] = 1883
+app.config['MQTT_REFRESH_TIME'] = 1.0
 
+mqtt = Mqtt(app)
+mqtt_hum = Mqtt(app)
+mqtt_light = Mqtt(app)
 
 @app.route("/login", methods=['GET', 'POST'])
 def login():
@@ -164,6 +173,51 @@ def device_info (apikey, deviceID):
         data[2] = "Rosegarden"
         return jsonify (data)
 
+@mqtt.on_connect()
+def handle_connect(client, userdata, flags, rc):
+    mqtt.subscribe('house/temp')
+
+@mqtt_hum.on_connect()
+def handle_connect(client, userdata, flags, rc):
+    mqtt_hum.subscribe('house/hum')
+
+@mqtt_light.on_connect()
+def handle_connect(client, userdata, flags, rc):
+    mqtt_light.subscribe('house/light1')
+
+@mqtt.on_message()
+def handle_mqtt_message(client, userdata, message):
+    global temp_data
+    temp_data = message.payload.decode()
+    print(temp_data)
+    data = dict(
+        topic=message.topic,
+        payload=message.payload.decode()
+    )
+
+@mqtt_hum.on_message()
+def handle_mqtt_message1(client, userdata, message):
+    global hum_data
+    hum_data = message.payload.decode()
+    print(hum_data)
+    data = dict(
+        topic=message.topic,
+        payload=message.payload.decode()
+    )
+
+@mqtt_light.on_message()
+def handle_mqtt_message_light(client, userdata, message):
+    global light_data
+    light_data = message.payload.decode()
+    print(light_data)
+    data = dict(
+        topic=message.topic,
+        payload=message.payload.decode()
+    )
+
+@mqtt.on_log()
+def handle_logging(client, userdata, level, buf):
+    print(level, buf)
 
 
 @app.route('/api/<string:user>/update/<string:data>', methods=['GET','POST'])
@@ -176,11 +230,11 @@ def update_values(user, data):
             if (len(data) == 6) and (type(data) is list):
                 fieldname = data[0]
                 deviceID = data[1]
-                temp = data[2]
+                temp = temp_data
                 humidity = data[3]
                 moisture = data[4]
                 light = data[5]
-                mydb.update_values(apikey, fieldname, deviceID, temp, humidity, moisture, light)
+                mydb.update_values(apikey, fieldname, deviceID, temp_data, hum_data, moisture, light)
                 return ("Values Updated")
             else:
                 return "Data Decoding Error!"
@@ -201,8 +255,7 @@ def get_temperature(user):
         temperature = cur.fetchall()
         temp = temperature[0][0] + 0.01*randData
         
-        print(temperature)
-        return temp
+        return temp_data
 
 def get_moisture(user):
     
@@ -228,7 +281,7 @@ def get_humidity(user):
        humidity = cur.fetchall()
        hum = humidity[0][0] + 0.01*randData
 
-       return hum
+       return hum_data
 
 @app.route("/api/<string:apikey>/light", methods=["GET", "POST"])
 def get_light(user):

@@ -34,6 +34,7 @@ function getdata(data){
                 var light = data.light;
                 var moisture = data.moisture;
                 var temperature = data.temperature;
+                console.log(temperature);
                 var timest = data.time;
                 ele.innerHTML=humidity;
                 ele1.innerHTML=temperature;
