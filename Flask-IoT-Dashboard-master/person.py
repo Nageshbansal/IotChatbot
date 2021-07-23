@@ -18,16 +18,18 @@ class user:
             query = 'select password from users where username = "{0}"'.format(self.username)
             self.db.cursor.execute(query)
             output = self.db.cursor.fetchall()
+            print(output[0][0])
+            print(self.username)
+            print(self.secret)
+            if query is not None:
+                if self.secret   == output[0][0]:
+                    self.authenticated = True
+                        
+                    query = 'update users set last_login = now() where username = "{0}";'.format(self.username)
+                    self.db.cursor.execute(query)
+                    self.db.db.commit()
 
-            if output ==output:
-           
-                self.authenticated = True
-                    
-                query = 'update users set last_login = now() where username = "{0}";'.format(self.username)
-                self.db.cursor.execute(query)
-                self.db.db.commit()
-
-                return True
+                    return True
             else:
                 self.authenticated = False
                 return False

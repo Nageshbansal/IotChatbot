@@ -19,6 +19,7 @@ def login():
     error = ""
     if request.method == 'POST':
         user = person.user(request.form['username'], request.form['password'])
+    
         if user.authenticated:
             user.session_id = str(binascii.b2a_hex(os.urandom(15)))
             logged_in[user.username] = {"object": user}
@@ -31,10 +32,11 @@ def login():
 @app.route('/register',methods=['GET','POST'])
 def register():
    if request.method == "POST":
+    
        user = database.db.add_user(
            request.form['username'], request.form['password'], request.form['first_name'], request.form['last_name'], request.form['email'],request.form['phone_number'])
 
-
+        
 
 
 #this link is for the main dashboard of the website

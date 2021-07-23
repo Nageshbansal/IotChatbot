@@ -1,7 +1,16 @@
 
+// var username = "{{user.username}}"
+// console.log(username);
+var user
+function myfunc(username) {
+   user =  username
+}
+
+
+
 setInterval(() =>{
 var xhr = new XMLHttpRequest();
-xhr.open('GET','/api/nageshbansal/data')
+xhr.open('GET','/api/'+user+'/data')
 xhr.onload=function(){
     if(this.status==200){
          var sensors = JSON.parse(this.response);
@@ -13,6 +22,8 @@ xhr.onload=function(){
 }
 xhr.send()
 },2000);
+
+
 function getdata(data){
     var ele = document.getElementById('hum')
      var ele1 = document.getElementById('temp')
@@ -28,7 +39,15 @@ function getdata(data){
                 ele1.innerHTML=temperature;
                 ele2.innerHTML=moisture;
                 ele3.innerHTML=light;
-    
+        var today = new Date();
+        var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+        addData(temp_chart, time,myChart);
+        // document.getElementById("card-temp").innerHTML = temperature
+        if (couter >= 10 ){
+            removeData(temp_chart)   
+                    }
+        couter++;
+
 }
 
 
@@ -36,37 +55,6 @@ function getdata(data){
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// var temperature = document.getElementById('temperature');
 
 // function getdevice(){
 //     var requests = $.get('/api/nageshbansal/data/');
@@ -98,29 +86,70 @@ function getdata(data){
 // }
 
 // //temperature chart object created 
-// var temp_chart = new Chart(temperature, {
-//     type: 'line',
-//     data: {
-//         labels: [],
-//         datasets: [{
-//             label: 'Temperature W.R.T. Time',
-//             data: [],
-//             fill:true,
-//             backgroundColor: 'rgba(244, 67, 54, 0.1)',
-//             borderColor:'rgba(244, 67, 54, 1)',
-//             borderWidth: 3
-//         }]
-//     },
-//     options: {
-//         scales: {
-//             yAxes: [{
-//                 ticks: {
-//                     beginAtZero: true
-//                 }
-//             }]
-//         }
-//     }
-// });
+var ctx = document.getElementById('myChart');
+var myChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+        labels: [],
+        datasets: [{
+            label: 'Temperature W.R.T. Time',
+            data: [],
+            fill:true,
+            backgroundColor: 'rgba(244, 67, 54, 0.1)',
+            borderColor:'rgba(244, 67, 54, 1)',
+            borderWidth: 3
+        }]
+    },
+    options: {
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero: true
+                }
+            }]
+        }
+    }
+});
+
+function addData(chart, label, data) {
+    chart.data.labels.push(label);
+    chart.data.datasets.forEach((dataset) => {
+        dataset.data.push(data);
+    });
+    chart.update();
+}
+
+function removeData(chart) {
+    chart.data.labels.pop();
+    chart.data.datasets.forEach((dataset) => {
+        dataset.data.pop();
+    });
+    chart.update();
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 // var humidity = document.getElementById('humidity');
