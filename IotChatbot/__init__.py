@@ -10,6 +10,7 @@ import binascii
 import sqlite3
 import random
 import eventlet
+import string
 from flask_mqtt import Mqtt
 # from flask_socketio import SocketIO
 app = Flask(__name__)
@@ -19,7 +20,6 @@ api_loggers = {}
 mydb = database.db()
 
 
-# test api key aGFja2luZ2lzYWNyaW1lYXNmc2FmZnNhZnNhZmZzYQ==
 app.config['MQTT_BROKER_URL'] = '127.0.0.1'
 app.config['MQTT_BROKER_PORT'] = 1883
 app.config['MQTT_REFRESH_TIME'] = 1.0
@@ -28,10 +28,8 @@ mqtt = Mqtt(app)
 mqtt_hum = Mqtt(app)
 # mqtt_light = Mqtt(app)
 
-temp1 = 0
 randlist = list(x for x in range(0, 20))
 
-# test api key aGFja2luZ2lzYWNyaW1lYXNmc2FmZnNhZnNhZmZzYQ==
 
 
 @app.route("/login", methods=['GET', 'POST'])
@@ -174,23 +172,25 @@ def get_temperature(user):
         cur.execute(query)
             # randData = choice(randlist)
         temperature = cur.fetchall()
+        print(temperature)
         temp = temperature[0][0]
+        
         
         return temp
 
 
-def get_moisture(user):
+def get_fan(user):
 
     with sqlite3.connect("user.sqlite") as con:
         cur = con.cursor()
-        query = "select moisture from Devices where username = '{}'".format(
+        query = "select fan from Devices where username = '{}'".format(
             user)
         cur.execute(query)
-        randData = choice(randlist)
-        moisture = cur.fetchall()
-        moist = moisture[0][0] + 0.01*randData
-
-        return moist
+      
+        fan = cur.fetchall()
+        fa = fan[0][0] 
+        print(fan)
+        return fa
 
 
 def get_humidity(user):
@@ -224,41 +224,101 @@ def get_light(user):
 @app.route('/api/<string:user>/data/', methods=['GET', 'POST'])
 def data(user):
     temperature = get_temperature(user)
-    moisture = get_moisture(user)
+    fan = get_fan(user)
     light = get_light(user)
     humidity = get_humidity(user)
     time = datetime.now()
     time = time.strftime("%H:%M:%S")
     response = {"temperature": temperature, "light": light,
-                "humidity": humidity, "moisture": moisture, "time": time}
+                "humidity": humidity, "fan": fan, "time": time}
+    print(response)
     return response
 
 
+
+
+
 # chatbot
-list1 = ["Hi", "hi", "hey", "How are you?",
-         "Is anyone there?", "Hello", "Good day", "Whats up"]
+list1 = ["Hi", "hi", "hey", "How are you?","Is anyone there?", "Hello", "Good day", "Whats up"]
 list2 = ["Hello!", "Good to see you again!", "Hi there, how can I help?"]
 
 
-@app.route("/chatbot")
+
+def task():
+    print("here")
+    # import time
+    # time.sleep(1)   
+    return "here"
+
+
+# def do_something():
+#     get_bot_response()
+#     return do_something_else()
+
+@app.route('/set_temp')
+def set_temp():
+   return overview()
+
+@app.route("/get")
 # function for the bot response
 def get_bot_response():
+  
     userText = request.args.get('msg')
-
-    userText.lower()
+  
+ 
+    usertext = userText.lower()
 
     if userText in list1:
 
         import random
         return random.choice(list2)
+    
+    elif "set" in userText:
+        if "temperature" in userText:
+            li = userText.split()
+            print(li[-1])
+            
+            with sqlite3.connect("user.sqlite") as con:
 
-    elif "temprature" in userText:
-        get_temperature("test")
+                query = "UPDATE Devices SET  temperature= ? WHERE username= ? "
+                cur = con.cursor()
+                cur.execute(query, (li[-1], "test"))
 
-    elif "lights" in userText:
-        lights1 = Lights()
-        return str(lights1.current_status)
+            return 'temperature is {}'.format(li[-1])
+    elif "turn" in userText:
+        if "light" in userText:
+            li = userText.split()
+            print(li[-2])
 
+            with sqlite3.connect("user.sqlite") as con:
+
+                query = "UPDATE Devices SET  light= ? WHERE username= ? "
+                cur = con.cursor()
+                cur.execute(query, (li[-2], "test"))
+
+            return 'light is now turned {}'.format(li[-2])
+
+        elif "fan" in userText:
+            li = userText.split()
+            print(li[-2])
+
+            with sqlite3.connect("user.sqlite") as con:
+
+                query = "UPDATE Devices SET  fan= ? WHERE username= ? "
+                cur = con.cursor()
+                cur.execute(query, (li[-2], "test"))
+
+            return 'fan is now turned {}'.format(li[-2])
+        
+    
+
+    elif "temperature" in userText:
+        temp = get_temperature("test")
+        return str(temp)
+    
+    
+
+ 
     elif userText == "quit":
         if 'download' in userText:
             pass  # do something

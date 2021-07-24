@@ -27,27 +27,22 @@ xhr.send()
 function getdata(data){
     var ele = document.getElementById('hum')
      var ele1 = document.getElementById('temp')
-      var ele2 = document.getElementById('moist')
+      var ele2 = document.getElementById('fan')
        var ele3 = document.getElementById('lig')
 
                 var humidity = data.humidity;
                 var light = data.light;
-                var moisture = data.moisture;
+                var fan = data.fan;
+                console.log(fan)
                 var temperature = data.temperature;
                 var timest = data.time;
                 ele.innerHTML=humidity;
                 ele1.innerHTML=temperature;
-                ele2.innerHTML=moisture;
+                ele2.innerHTML=fan;
                 ele3.innerHTML=light;
-        var today = new Date();
-        var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-        addData(temp_chart, time,myChart);
+      
         // document.getElementById("card-temp").innerHTML = temperature
-        if (couter >= 10 ){
-            removeData(temp_chart)   
-                    }
-        couter++;
-
+    
 }
 
 
@@ -85,47 +80,47 @@ function getdata(data){
     
 // }
 
-// //temperature chart object created 
-var ctx = document.getElementById('myChart');
-var myChart = new Chart(ctx, {
-    type: 'line',
-    data: {
-        labels: [],
-        datasets: [{
-            label: 'Temperature W.R.T. Time',
-            data: [],
-            fill:true,
-            backgroundColor: 'rgba(244, 67, 54, 0.1)',
-            borderColor:'rgba(244, 67, 54, 1)',
-            borderWidth: 3
-        }]
-    },
-    options: {
-        scales: {
-            yAxes: [{
-                ticks: {
-                    beginAtZero: true
-                }
-            }]
-        }
-    }
-});
+// // //temperature chart object created 
+// var ctx = document.getElementById('myChart');
+// var myChart = new Chart(ctx, {
+//     type: 'line',
+//     data: {
+//         labels: [],
+//         datasets: [{
+//             label: 'Temperature W.R.T. Time',
+//             data: [],
+//             fill:true,
+//             backgroundColor: 'rgba(244, 67, 54, 0.1)',
+//             borderColor:'rgba(244, 67, 54, 1)',
+//             borderWidth: 3
+//         }]
+//     },
+//     options: {
+//         scales: {
+//             yAxes: [{
+//                 ticks: {
+//                     beginAtZero: true
+//                 }
+//             }]
+//         }
+//     }
+// });
 
-function addData(chart, label, data) {
-    chart.data.labels.push(label);
-    chart.data.datasets.forEach((dataset) => {
-        dataset.data.push(data);
-    });
-    chart.update();
-}
+// function addData(chart, label, data) {
+//     chart.data.labels.push(label);
+//     chart.data.datasets.forEach((dataset) => {
+//         dataset.data.push(data);
+//     });
+//     chart.update();
+// }
 
-function removeData(chart) {
-    chart.data.labels.pop();
-    chart.data.datasets.forEach((dataset) => {
-        dataset.data.pop();
-    });
-    chart.update();
-}
+// function removeData(chart) {
+//     chart.data.labels.pop();
+//     chart.data.datasets.forEach((dataset) => {
+//         dataset.data.pop();
+//     });
+//     chart.update();
+// }
 
 
 
