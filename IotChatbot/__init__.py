@@ -19,7 +19,7 @@ logged_in = {}
 api_loggers = {}
 mydb = database.db()
 
-
+temp2 = 0
 app.config['MQTT_BROKER_URL'] = '127.0.0.1'
 app.config['MQTT_BROKER_PORT'] = 1883
 app.config['MQTT_REFRESH_TIME'] = 1.0
@@ -277,7 +277,9 @@ def get_bot_response():
         if "temperature" in userText:
             li = userText.split()
             print(li[-1])
-            
+            global temp2
+            temp2 = li[-1]
+            mqtt.publish('control/temp', str(temp2))
             with sqlite3.connect("user.sqlite") as con:
 
                 query = "UPDATE Devices SET  temperature= ? WHERE username= ? "
@@ -297,18 +299,17 @@ def get_bot_response():
                 cur.execute(query, (li[-2], "test"))
 
             return 'light is now turned {}'.format(li[-2])
-
-        elif "fan" in userText:
+        elif "light" in userText:
             li = userText.split()
             print(li[-2])
 
             with sqlite3.connect("user.sqlite") as con:
 
-                query = "UPDATE Devices SET  fan= ? WHERE username= ? "
+                query = "UPDATE Devices SET  light= ? WHERE username= ? "
                 cur = con.cursor()
                 cur.execute(query, (li[-2], "test"))
 
-            return 'fan is now turned {}'.format(li[-2])
+            return 'light is now turned {}'.format(li[-2])
         
     
 

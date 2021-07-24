@@ -1,25 +1,28 @@
 from random import choice
 import paho.mqtt.client as mqtt
 import time
-#  function
-
-
-def connect_msg():
-    print('Connected to Broker')
-
-
+data = 25
 randlist = [i for i in range(0, 100)]
-client = mqtt.Client(client_id='Temperature sensor')
-client.connect("127.0.0.1", 1883)
 
-# Connecting callback functions
-client.on_connect = connect_msg
 
-# Connect to broker
+def on_connect(client, userdata, flags, rc):
+    client.subscribe("control/temp")
 
+
+def on_message(client, userdata, msg):
+    global data
+    data = msg.payload.decode("utf-8")
+    print("Message is : "+str(msg.payload.decode("utf-8")))
+
+
+mqttc = mqtt.Client("Temperature Sensor")
+mqttc.on_connect = on_connect
+mqttc.on_message = on_message
+mqttc.connect("127.0.0.1", 1883, 60)
+mqttc.loop_start()
 while True:
     randData = choice(randlist)
-    temp = 25 + 0.01*randData
-    client.publish("house/temp", temp)
-    print("Just published " + str(temp))
-    time.sleep(2)
+    temp = float(data) + 0.01*randData
+    mqttc.publish("house/temp", str(temp))
+    print("publish message " + str(temp))
+    time.sleep(1)
