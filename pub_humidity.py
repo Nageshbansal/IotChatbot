@@ -20,4 +20,4 @@ while True:
     hum = 100 + 0.01*randData
     client.publish("house/hum", hum)
     print("Just published " + str(hum))
-    time.sleep(2)
+    time.sleep(5)

@@ -25,4 +25,4 @@ while True:
     temp = float(data) + 0.01*randData
     mqttc.publish("house/temp", str(temp))
     print("publish message " + str(temp))
-    time.sleep(1)
+    time.sleep(2)
