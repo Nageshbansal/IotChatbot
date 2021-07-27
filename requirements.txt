@@ -1,0 +1,6 @@
+python_firebase==1.2
+Flask_MQTT==1.1.1
+eventlet==0.31.1
+Flask==2.0.1
+firebase==3.0.1
+paho_mqtt==1.5.1
