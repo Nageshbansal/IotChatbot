@@ -32,7 +32,7 @@ temp2 = 0
 randlist = list(x for x in range(0, 20))
 
 
-@app.route("/login", methods=["GET", "POST"])
+@app.route("/", methods=["GET", "POST"])
 def login():
     error = ""
     if request.method == "POST":
@@ -66,9 +66,9 @@ def register():
 
 
 # # this link is for the main dashboard of the website
-@app.route("/", methods=["GET", "POST"])
-def home():
-    return render_template("home.html", title="HOME - Landing Page")
+# @app.route("/", methods=["GET", "POST"])
+# def home():
+#     return render_template("home.html", title="HOME - Landing Page")
 
 
 @app.route("/overview/<string:username>/<string:session>", methods=["GET", "POST"])
