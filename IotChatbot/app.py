@@ -313,7 +313,7 @@ def get_bot_response():
             print(li[-1])
             global temp2
             temp2 = li[-1]
-#             mqtt.publish("control/temp", str(temp2))
+            mqtt.publish("control/temp", str(temp2))
             with sqlite3.connect("user.sqlite") as con:
 
                 query = "UPDATE Devices SET  temperature= ? WHERE username= ? "
