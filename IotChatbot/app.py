@@ -28,11 +28,11 @@ app.config['MQTT_KEEPALIVE'] = 5
 # set TLS to disabled for testing purposes
 app.config['MQTT_TLS_ENABLED'] = False
 
-
-mqtt = Mqtt(app)
-mqtt_hum = Mqtt(app)
 mqtt_light = Mqtt(app)
 mqtt_fan = Mqtt(app)
+mqtt = Mqtt(app)
+mqtt_hum = Mqtt(app)
+
 
 randlist = list(x for x in range(0, 20))
 
@@ -109,15 +109,6 @@ def logout(username, session):
 # mqtt
 
 
-@mqtt.on_connect()
-def handle_connect(client, userdata, flags, rc):
-  
-    mqtt.subscribe("house/temp")
-
-
-@mqtt_hum.on_connect()
-def handle_connect(client, userdata, flags, rc):
-    mqtt_hum.subscribe("house/hum")
 
 
 @mqtt_light.on_connect()
@@ -128,6 +119,16 @@ def handle_connect(client, userdata, flags, rc):
 @mqtt_fan.on_connect()
 def handle_connect(client, userdata, flags, rc):
     mqtt_fan.subscribe('house/fan')
+    
+@mqtt.on_connect()
+def handle_connect(client, userdata, flags, rc):
+  
+    mqtt.subscribe("house/temp")
+
+
+@mqtt_hum.on_connect()
+def handle_connect(client, userdata, flags, rc):
+    mqtt_hum.subscribe("house/hum")
 
 
 
