@@ -31,8 +31,8 @@ app.config['MQTT_TLS_ENABLED'] = False
 
 mqtt = Mqtt(app)
 mqtt_hum = Mqtt(app)
-# mqtt_light = Mqtt(app)
-# mqtt_fan = Mqtt(app)
+mqtt_light = Mqtt(app)
+mqtt_fan = Mqtt(app)
 
 randlist = list(x for x in range(0, 20))
 
@@ -120,14 +120,14 @@ def handle_connect(client, userdata, flags, rc):
     mqtt_hum.subscribe("house/hum")
 
 
-# @mqtt_light.on_connect()
-# def handle_connect(client, userdata, flags, rc):
-#     mqtt_light.subscribe('house/light')
+@mqtt_light.on_connect()
+def handle_connect(client, userdata, flags, rc):
+    mqtt_light.subscribe('house/light')
 
 
-# @mqtt_fan.on_connect()
-# def handle_connect(client, userdata, flags, rc):
-#     mqtt_fan.subscribe('house/fan')
+@mqtt_fan.on_connect()
+def handle_connect(client, userdata, flags, rc):
+    mqtt_fan.subscribe('house/fan')
 
 
 
@@ -157,28 +157,28 @@ def handle_mqtt_message1(client, userdata, message):
         cur.execute(query, (hum_data, "test"))
 
 
-# @mqtt_light.on_message()
-# def handle_mqtt_message_light(client, userdata, message):
-#     global light_data
-#     light_data = message.payload.decode()
-#     print(light_data)
-#     with sqlite3.connect("user.sqlite") as con:
+@mqtt_light.on_message()
+def handle_mqtt_message_light(client, userdata, message):
+    global light_data
+    light_data = message.payload.decode()
+    print(light_data)
+    with sqlite3.connect("user.sqlite") as con:
 
-#         query = "UPDATE Devices SET  light= ? WHERE username= ? "
-#         cur = con.cursor()
-#         cur.execute(query, (light_data, "test"))
+        query = "UPDATE Devices SET  light= ? WHERE username= ? "
+        cur = con.cursor()
+        cur.execute(query, (light_data, "test"))
 
 
-# @mqtt_fan.on_message()
-# def handle_mqtt_message_fan(client, userdata, message):
-#     global fan_data
-#     fan_data = message.payload.decode()
-#     print(fan_data)
-#     with sqlite3.connect("user.sqlite") as con:
+@mqtt_fan.on_message()
+def handle_mqtt_message_fan(client, userdata, message):
+    global fan_data
+    fan_data = message.payload.decode()
+    print(fan_data)
+    with sqlite3.connect("user.sqlite") as con:
 
-#         query = "UPDATE Devices SET  fan= ? WHERE username= ? "
-#         cur = con.cursor()
-#         cur.execute(query, (fan_data, "test"))
+        query = "UPDATE Devices SET  fan= ? WHERE username= ? "
+        cur = con.cursor()
+        cur.execute(query, (fan_data, "test"))
 
 # @mqtt.on_log()
 # def handle_logging(client, userdata, level, buf):
@@ -337,7 +337,7 @@ def get_bot_response():
         elif "fan" in userText:
             li = userText.split()
             print(li[-2])
-#             mqtt.publish("control/fan", str(li[-2]))
+            mqtt.publish("control/fan", str(li[-2]))
             with sqlite3.connect("user.sqlite") as con:
 
                 query = "UPDATE Devices SET  fan= ? WHERE username= ? "
