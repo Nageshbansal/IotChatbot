@@ -30,7 +30,7 @@ app.config['MQTT_TLS_ENABLED'] = False
 
 
 mqtt = Mqtt(app)
-# mqtt_hum = Mqtt(app)
+mqtt_hum = Mqtt(app)
 # mqtt_light = Mqtt(app)
 # mqtt_fan = Mqtt(app)
 
@@ -115,9 +115,9 @@ def handle_connect(client, userdata, flags, rc):
     mqtt.subscribe("house/temp")
 
 
-# @mqtt_hum.on_connect()
-# def handle_connect(client, userdata, flags, rc):
-#     mqtt_hum.subscribe("house/hum")
+@mqtt_hum.on_connect()
+def handle_connect(client, userdata, flags, rc):
+    mqtt_hum.subscribe("house/hum")
 
 
 # @mqtt_light.on_connect()
@@ -144,17 +144,17 @@ def handle_mqtt_message(client, userdata, message):
         cur.execute(query, (temp_data, "test"))
 
 
-# @mqtt_hum.on_message()
-# def handle_mqtt_message1(client, userdata, message):
-#     global hum_data
-#     hum_data = message.payload.decode()
-#     print(hum_data)
-#     data = dict(topic=message.topic, payload=message.payload.decode())
-#     with sqlite3.connect("user.sqlite") as con:
+@mqtt_hum.on_message()
+def handle_mqtt_message1(client, userdata, message):
+    global hum_data
+    hum_data = message.payload.decode()
+    print(hum_data)
+    data = dict(topic=message.topic, payload=message.payload.decode())
+    with sqlite3.connect("user.sqlite") as con:
 
-#         query = "UPDATE Devices SET  humidity= ? WHERE username= ? "
-#         cur = con.cursor()
-#         cur.execute(query, (hum_data, "test"))
+        query = "UPDATE Devices SET  humidity= ? WHERE username= ? "
+        cur = con.cursor()
+        cur.execute(query, (hum_data, "test"))
 
 
 # @mqtt_light.on_message()
