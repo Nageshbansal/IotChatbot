@@ -47,6 +47,8 @@
     <button class="w3-bar-item w3-button w3-hide-large w3-hover-none w3-hover-text-light-grey" onclick="w3_open();"><i
         class="fa fa-bars"></i>  Menu</button>
     <span class="w3-bar-item w3-right">Iot-Chatbot</span>
+     <button onclick='window.location.href = "/logout/{{ user.username }}/{{ user.session }}";'
+      class="w3-button w3-red w3-round">Logout</button>
     <input type="hidden" id="apikey" value="{{ user.api }}">
   </div>
 
