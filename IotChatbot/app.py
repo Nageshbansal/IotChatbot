@@ -325,7 +325,7 @@ def get_bot_response():
         if "light" in userText:
             li = userText.split()
             print(li[-2])
-#             mqtt.publish("control/light", str(li[-2]))
+            mqtt.publish("control/light", str(li[-2]))
             with sqlite3.connect("user.sqlite") as con:
 
                 query = "UPDATE Devices SET  light= ? WHERE username= ? "
