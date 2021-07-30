@@ -20,11 +20,16 @@ api_loggers = {}
 mydb = database.db()
 
 temp2 = 0
-# app.config["MQTT_BROKER_URL"] = "127.0.0.1"
-# app.config["MQTT_BROKER_PORT"] = 1883
-# app.config["MQTT_REFRESH_TIME"] = 1.0
+app.config['MQTT_BROKER_URL'] = 'broker.hivemq.com'
+app.config['MQTT_BROKER_PORT'] = 1883  # default port for non-tls connection
 
-# mqtt = Mqtt(app)
+# set the time interval for sending a ping to the broker to 5 seconds
+app.config['MQTT_KEEPALIVE'] = 5
+# set TLS to disabled for testing purposes
+app.config['MQTT_TLS_ENABLED'] = False
+
+
+mqtt = Mqtt(app)
 # mqtt_hum = Mqtt(app)
 # mqtt_light = Mqtt(app)
 # mqtt_fan = Mqtt(app)
@@ -104,9 +109,9 @@ def logout(username, session):
 # mqtt
 
 
-# @mqtt.on_connect()
-# def handle_connect(client, userdata, flags, rc):
-#     mqtt.subscribe("house/temp")
+@mqtt.on_connect()
+def handle_connect(client, userdata, flags, rc):
+    mqtt.subscribe("house/temp")
 
 
 # @mqtt_hum.on_connect()
@@ -125,17 +130,17 @@ def logout(username, session):
 
 
 
-# @mqtt.on_message()
-# def handle_mqtt_message(client, userdata, message):
-#     global temp_data
-#     temp_data = message.payload.decode()
-#     print(temp_data)
+@mqtt.on_message()
+def handle_mqtt_message(client, userdata, message):
+    global temp_data
+    temp_data = message.payload.decode()
+    print(temp_data)
 
-#     with sqlite3.connect("user.sqlite") as con:
+    with sqlite3.connect("user.sqlite") as con:
 
-#         query = "UPDATE Devices SET  temperature= ? WHERE username= ? "
-#         cur = con.cursor()
-#         cur.execute(query, (temp_data, "test"))
+        query = "UPDATE Devices SET  temperature= ? WHERE username= ? "
+        cur = con.cursor()
+        cur.execute(query, (temp_data, "test"))
 
 
 # @mqtt_hum.on_message()
