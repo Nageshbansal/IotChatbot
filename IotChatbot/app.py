@@ -33,7 +33,7 @@ mqtt = Mqtt(app)
 # mqtt_hum = Mqtt(app)
 # mqtt_light = Mqtt(app)
 # mqtt_fan = Mqtt(app)
-# app
+
 randlist = list(x for x in range(0, 20))
 
 
