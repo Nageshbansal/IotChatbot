@@ -120,15 +120,17 @@ def handle_connect(client, userdata, flags, rc):
 def handle_connect(client, userdata, flags, rc):
     mqtt_fan.subscribe('house/fan')
     
+@mqtt_hum.on_connect()
+def handle_connect(client, userdata, flags, rc):
+    mqtt_hum.subscribe("house/hum")
+    
+    
 @mqtt.on_connect()
 def handle_connect(client, userdata, flags, rc):
   
     mqtt.subscribe("house/temp")
 
 
-@mqtt_hum.on_connect()
-def handle_connect(client, userdata, flags, rc):
-    mqtt_hum.subscribe("house/hum")
 
 
 
