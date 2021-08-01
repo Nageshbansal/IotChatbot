@@ -232,6 +232,11 @@ def get_humidity(user):
         hum = humidity[0][0]
 
         return hum
+    
+def get_ac(temp):
+       
+      ac  = temp
+      return ac
 
 
 @app.route("/api/<string:apikey>/light", methods=["GET", "POST"])
@@ -253,6 +258,7 @@ def data(user):
     fan = get_fan(user)
     light = get_light(user)
     humidity = get_humidity(user)
+    ac  = get_ac()
     time = datetime.now()
     time = time.strftime("%H:%M:%S")
     response = {
@@ -260,11 +266,13 @@ def data(user):
         "light": light,
         "humidity": humidity,
         "fan": fan,
+        "ac" : ac,
         "time": time,
     }
     print(response)
     return response
 
+AC = "off"
 
 # chatbot
 list1 = [
@@ -317,6 +325,7 @@ def get_bot_response():
             print(li[-1])
             global temp2
             temp2 = li[-1]
+            get_ac(temp2)
             mqtt.publish("control/temp", str(temp2))
             with sqlite3.connect("user.sqlite") as con:
 
