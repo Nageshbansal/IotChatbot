@@ -3,7 +3,7 @@
 
 
 ## Abstract 
- It is a chatbot which integrates with home appliances and show thier live status , give commands to change status. 
+ It is a chatbot which integrates with Iot Devices(home appliances) and show their live status , give commands to change status. 
     
 ## Networking 
  ### Creation of IoT Network Using MQTT (Message Queuing Telemetry Transport)
