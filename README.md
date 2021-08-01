@@ -26,7 +26,7 @@
        Password : 1234 
         ```
 >By Using Local Host
-   - Downlaod the code as a zip file 
+   - Downlaod the code as a [zip file](https://github.com/Nageshbansal/IotChatbot/archive/refs/heads/main.zip)
      or clone the repo By using following command in git bash
      ```
       git clone https://github.com/Nageshbansal/IotChatbot.git
